@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🗝️ The Golden Key Adventure</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --cream: #FFFBF0;
+    --green-light: #A8D5A2;
+    --green-mid: #5FA85A;
+    --green-dark: #2E7D32;
+    --brown: #8B5E3C;
+    --brown-light: #C8956A;
+    --yellow: #FFD966;
+    --gold: #F4A800;
+    --orange: #FF8C42;
+    --red: #E05C5C;
+    --blue: #6BBDE3;
+    --blue-dark: #3A8FC4;
+    --purple: #B57BDE;
+    --pink: #F4A7C0;
+    --white: #FFFFFF;
+    --ink: #2C1A0E;
+    --ink-soft: #5A3E2B;
+    --shadow: rgba(44,26,14,0.12);
+    --shadow-deep: rgba(44,26,14,0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND SCENE ── */
+  .bg-scene {
+    position: fixed; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, #D4EEFF 0%, #E8F5E9 55%, #C8E6C9 100%);
+    overflow: hidden;
+  }
+  .sun {
+    position: absolute; top: 32px; right: 80px;
+    width: 72px; height: 72px;
+    background: var(--yellow);
+    border-radius: 50%;
+    box-shadow: 0 0 0 12px rgba(255,217,102,0.25), 0 0 0 24px rgba(255,217,102,0.1);
+    animation: sunPulse 4s ease-in-out infinite;
+  }
+  @keyframes sunPulse { 0%,100%{box-shadow:0 0 0 12px rgba(255,217,102,0.25),0 0 0 24px rgba(255,217,102,0.1)} 50%{box-shadow:0 0 0 18px rgba(255,217,102,0.3),0 0 0 36px rgba(255,217,102,0.12)} }
+
+  .cloud { position: absolute; background: white; border-radius: 50px; opacity: 0.85; }
+  .cloud::before,.cloud::after { content:''; position:absolute; background:white; border-radius:50%; }
+  .cloud-1 { width:90px;height:30px; top:60px;left:8%; animation:cloudDrift 18s linear infinite; }
+  .cloud-1::before { width:42px;height:42px;top:-22px;left:12px; }
+  .cloud-1::after { width:28px;height:28px;top:-14px;left:44px; }
+  .cloud-2 { width:70px;height:22px;top:80px;left:35%;animation:cloudDrift 26s linear infinite 4s; }
+  .cloud-2::before { width:32px;height:32px;top:-18px;left:10px; }
+  .cloud-2::after { width:22px;height:22px;top:-12px;left:36px; }
+  .cloud-3 { width:80px;height:26px;top:45px;left:60%;animation:cloudDrift 22s linear infinite 8s; }
+  .cloud-3::before { width:38px;height:38px;top:-20px;left:14px; }
+  .cloud-3::after { width:26px;height:26px;top:-14px;left:46px; }
+  @keyframes cloudDrift { from{transform:translateX(-120px)} to{transform:translateX(110vw)} }
+
+  .grass-strip {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+    background: var(--green-mid);
+    border-radius: 50% 50% 0 0 / 30px 30px 0 0;
+  }
+  .grass-strip::before {
+    content:''; position:absolute; top:-18px; left:0; right:0; height:36px;
+    background: var(--green-light);
+    border-radius: 50%;
+  }
+
+  .tree { position: absolute; bottom: 80px; }
+  .tree-trunk { width:18px;height:40px;background:var(--brown);border-radius:4px;margin:0 auto; }
+  .tree-top { width:60px;height:64px;background:var(--green-mid);border-radius:50% 50% 45% 45%;margin:0 auto;margin-top:-20px; box-shadow: inset 0 -8px 0 rgba(0,0,0,0.1); }
+  .tree-top::after { content:'🌸'; position:absolute; top:-8px; left:50%; transform:translateX(-50%); font-size:14px; }
+  .tree-1 { left:3%; }
+  .tree-2 { left:10%; }
+  .tree-3 { right:5%; }
+  .tree-4 { right:13%; }
+
+  .mushroom { position:absolute; bottom:100px; font-size:22px; animation:bobMush 3s ease-in-out infinite; }
+  .mushroom-1 { left:22%; animation-delay:0.5s; }
+  .mushroom-2 { right:22%; animation-delay:1.2s; }
+  @keyframes bobMush { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+
+  .butterfly { position:absolute; font-size:18px; animation:flutter 6s ease-in-out infinite; }
+  .butterfly-1 { top:25%;left:15%;animation-delay:0s; }
+  .butterfly-2 { top:35%;right:18%;animation-delay:2s; }
+  @keyframes flutter { 0%,100%{transform:translate(0,0) rotate(-5deg)} 25%{transform:translate(20px,-15px) rotate(5deg)} 50%{transform:translate(40px,5px) rotate(-3deg)} 75%{transform:translate(20px,-8px) rotate(4deg)} }
+
+  /* ── LAYOUT ── */
+  .app {
+    position: relative; z-index: 1;
+    max-width: 860px; margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding: 28px 20px 20px;
+    margin-bottom: 8px;
+  }
+  .header-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    color: var(--green-dark);
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+    text-shadow: 3px 3px 0 rgba(46,125,50,0.15);
+  }
+  .header-title span { color: var(--gold); }
+  .header-sub {
+    font-size: 1rem; color: var(--ink-soft);
+    margin-top: 6px; font-weight: 600;
+  }
+
+  /* ── PLAYER STATS BAR ── */
+  .stats-bar {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    justify-content: center;
+    margin: 12px 0 20px;
+  }
+  .stat-chip {
+    display: flex; align-items: center; gap: 7px;
+    background: white;
+    border: 2.5px solid var(--green-light);
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-weight: 800; font-size: 0.95rem;
+    box-shadow: 0 3px 0 var(--shadow);
+    transition: transform 0.15s;
+  }
+  .stat-chip:hover { transform: translateY(-2px); }
+  .stat-icon { font-size: 1.1rem; }
+  .stat-label { color: var(--ink-soft); font-size: 0.78rem; font-weight: 700; }
+  .stat-value { color: var(--ink); font-weight: 800; }
+  .stat-value.money { color: var(--green-dark); }
+  .stat-value.key { color: var(--gold); }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin: 24px 0 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── CHECKPOINT MAP ── */
+  .checkpoint-map {
+    background: white;
+    border-radius: 24px;
+    padding: 20px 16px;
+    box-shadow: 0 4px 0 var(--shadow);
+    border: 2.5px solid var(--green-light);
+    margin-bottom: 20px;
+  }
+  .map-path {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    gap: 4px; flex-wrap: nowrap;
+    overflow-x: auto; padding-bottom: 4px;
+  }
+  .cp-node {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 5px; flex-shrink: 0;
+  }
+  .cp-circle {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--green-light);
+    border: 3px solid var(--green-mid);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 3px 0 var(--shadow);
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+  .cp-circle.done {
+    background: var(--green-mid);
+    border-color: var(--green-dark);
+  }
+  .cp-circle.done::after {
+    content:'✓'; position:absolute;
+    bottom:-4px; right:-4px;
+    width:18px;height:18px;
+    background:var(--gold); border-radius:50%;
+    font-size:10px; color:white; font-weight:900;
+    display:flex;align-items:center;justify-content:center;
+    line-height:18px; text-align:center;
+  }
+  .cp-circle.active {
+    background: var(--yellow);
+    border-color: var(--gold);
+    animation: cpPop 1.5s ease-in-out infinite;
+  }
+  @keyframes cpPop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+  .cp-label { font-size: 0.7rem; font-weight: 700; color: var(--ink-soft); }
+
+  .path-line {
+    flex: 1; height: 4px;
+    background: repeating-linear-gradient(90deg, var(--green-mid) 0, var(--green-mid) 6px, transparent 6px, transparent 10px);
+    border-radius: 2px;
+    min-width: 12px;
+  }
+  .path-line.done { background: var(--green-mid); }
+  .castle-node { font-size: 2.2rem; flex-shrink:0; }
+
+  /* ── KEY FRAGMENTS ── */
+  .key-row {
+    display: flex; gap: 8px; justify-content: center;
+    flex-wrap: wrap; margin: 10px 0;
+  }
+  .key-frag {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    border: 2.5px solid #ddd;
+    background: #f5f5f5;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+  }
+  .key-frag.collected {
+    background: var(--yellow);
+    border-color: var(--gold);
+    box-shadow: 0 2px 0 rgba(244,168,0,0.3);
+    animation: keyPop 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  @keyframes keyPop { 0%{transform:scale(0.5) rotate(-15deg)} 70%{transform:scale(1.15) rotate(5deg)} 100%{transform:scale(1) rotate(0)} }
+
+  /* ── CARDS ── */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 0 var(--shadow);
+    border: 2.5px solid #eee;
+    margin-bottom: 14px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--shadow); }
+
+  /* ── CHARACTER DISPLAY ── */
+  .characters {
+    display: flex; gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .char-card {
+    background: white;
+    border-radius: 20px;
+    padding: 16px 20px;
+    border: 2.5px solid var(--green-light);
+    box-shadow: 0 4px 0 var(--shadow);
+    text-align: center;
+    flex: 1; min-width: 140px; max-width: 200px;
+    transition: transform 0.2s;
+  }
+  .char-card:hover { transform: translateY(-4px); }
+
+  .char-svg {
+    width: 80px; height: 80px;
+    margin: 0 auto 10px;
+  }
+  .char-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem; color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .char-role {
+    font-size: 0.75rem; color: var(--ink-soft);
+    font-weight: 700;
+  }
+
+  /* ── SHOP ITEMS ── */
+  .shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    gap: 12px; margin: 12px 0;
+  }
+  .shop-item {
+    background: white;
+    border-radius: 18px;
+    padding: 16px 14px;
+    border: 2.5px solid #eee;
+    box-shadow: 0 3px 0 var(--shadow);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+    overflow: hidden;
+  }
+  .shop-item::before {
+    content:''; position:absolute;top:0;left:0;right:0;height:5px;
+    border-radius:18px 18px 0 0;
+  }
+  .shop-item.luck::before { background: var(--purple); }
+  .shop-item.time::before { background: var(--blue); }
+  .shop-item.money::before { background: var(--gold); }
+  .shop-item.hint::before { background: var(--green-mid); }
+  .shop-item:hover { transform: translateY(-3px); box-shadow: 0 6px 0 var(--shadow-deep); }
+  .shop-item:active { transform: translateY(0); box-shadow: 0 2px 0 var(--shadow); }
+  .shop-item.bought { opacity: 0.5; pointer-events: none; }
+
+  .shop-icon { font-size: 2rem; margin-bottom: 8px; display:block; }
+  .shop-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem; color: var(--ink);
+    margin-bottom: 5px;
+  }
+  .shop-desc { font-size: 0.75rem; color: var(--ink-soft); font-weight: 600; line-height: 1.4; margin-bottom: 10px; }
+  .shop-price {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--cream); border-radius: 999px;
+    padding: 4px 12px; font-weight: 800; font-size: 0.88rem;
+    color: var(--green-dark); border: 2px solid var(--green-light);
+  }
+  .risk-badge {
+    display:inline-block;
+    font-size:0.65rem; font-weight:800;
+    padding:2px 8px; border-radius:999px;
+    margin-bottom:6px;
+  }
+  .risk-high { background:#FEE2E2; color:#DC2626; }
+  .risk-safe { background:#DCFCE7; color:#16A34A; }
+
+  /* ── CHALLENGE PANEL ── */
+  .challenge-panel {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    border: 2.5px solid var(--yellow);
+    box-shadow: 0 4px 0 rgba(244,168,0,0.2);
+    margin-bottom: 16px;
+    display: none;
+  }
+  .challenge-panel.active { display: block; animation: slideIn 0.3s ease; }
+  @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .challenge-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .challenge-badge {
+    background: var(--yellow);
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem; color: var(--ink);
+  }
+
+  .timer-bar {
+    background: #f0f0f0;
+    border-radius: 999px;
+    height: 12px; margin: 12px 0;
+    overflow: hidden;
+  }
+  .timer-fill {
+    height: 100%; background: linear-gradient(90deg, var(--green-mid), var(--green-light));
+    border-radius: 999px;
+    transition: width 1s linear;
+  }
+  .timer-fill.warning { background: linear-gradient(90deg, var(--orange), var(--yellow)); }
+  .timer-fill.danger { background: linear-gradient(90deg, var(--red), var(--orange)); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800; font-size: 0.95rem;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: none; cursor: pointer;
+    box-shadow: 0 4px 0 var(--shadow-deep);
+    transition: all 0.15s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--shadow-deep); }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--shadow-deep); }
+  .btn-green { background: var(--green-mid); color: white; box-shadow: 0 4px 0 var(--green-dark); }
+  .btn-green:hover { box-shadow: 0 6px 0 var(--green-dark); }
+  .btn-yellow { background: var(--yellow); color: var(--ink); box-shadow: 0 4px 0 var(--gold); }
+  .btn-yellow:hover { box-shadow: 0 6px 0 var(--gold); }
+  .btn-red { background: var(--red); color: white; box-shadow: 0 4px 0 #b03030; }
+  .btn-outline { background: white; color: var(--ink); border: 2.5px solid var(--green-light); box-shadow: 0 3px 0 var(--shadow); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(44,26,14,0.4);
+    backdrop-filter: blur(3px);
+    align-items: center; justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  .modal {
+    background: white; border-radius: 28px;
+    padding: 28px 24px; max-width: 420px; width: 100%;
+    box-shadow: 0 12px 40px rgba(44,26,14,0.25);
+    border: 3px solid var(--green-light);
+    text-align: center;
+    animation: modalPop 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+    position: relative;
+  }
+  @keyframes modalPop { from{transform:scale(0.7) translateY(20px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
+  .modal-icon { font-size: 3.5rem; margin-bottom: 12px; display:block; }
+  .modal-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem; color: var(--ink); margin-bottom: 8px;
+  }
+  .modal-body { font-size: 0.95rem; color: var(--ink-soft); font-weight: 600; line-height: 1.6; margin-bottom: 20px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── TOAST ── */
+  .toast-container { position: fixed; top: 20px; right: 20px; z-index: 200; display: flex; flex-direction: column; gap: 8px; }
+  .toast {
+    background: var(--ink);
+    color: white; border-radius: 16px;
+    padding: 12px 20px;
+    font-weight: 700; font-size: 0.9rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    display: flex; align-items: center; gap: 8px;
+    animation: toastIn 0.3s ease;
+    max-width: 280px;
+  }
+  .toast.success { background: var(--green-mid); }
+  .toast.warning { background: var(--orange); }
+  .toast.error { background: var(--red); }
+  .toast.gold { background: var(--gold); color: var(--ink); }
+  @keyframes toastIn { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes toastOut { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(40px)} }
+
+  /* ── FINAL CHALLENGE ── */
+  .final-section {
+    background: linear-gradient(135deg, #FFF8E1, #E8F5E9);
+    border-radius: 24px; padding: 24px;
+    border: 3px solid var(--gold);
+    margin-bottom: 16px;
+    display: none;
+  }
+  .final-section.active { display: block; }
+  .final-vs { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+  .final-char {
+    flex: 1; min-width: 140px; max-width: 200px;
+    background: white; border-radius: 20px;
+    padding: 16px; text-align: center;
+    border: 2.5px solid var(--green-light);
+    box-shadow: 0 3px 0 var(--shadow);
+  }
+  .answer-input {
+    width: 100%; padding: 12px 18px;
+    border-radius: 14px; border: 2.5px solid var(--green-light);
+    font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700;
+    outline: none; margin: 8px 0;
+    transition: border-color 0.2s;
+  }
+  .answer-input:focus { border-color: var(--green-mid); }
+
+  /* ── SCORE DISPLAY ── */
+  .score-board {
+    background: white; border-radius: 24px;
+    padding: 24px; text-align: center;
+    border: 2.5px solid var(--gold);
+    box-shadow: 0 4px 0 rgba(244,168,0,0.2);
+    display: none;
+  }
+  .score-board.active { display: block; animation: slideIn 0.4s ease; }
+  .score-big {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3rem; color: var(--green-dark); line-height: 1;
+  }
+
+  /* ── REWARD POPUP ── */
+  .reward-rain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 150;
+    display: none;
+  }
+  .coin-particle {
+    position: absolute; font-size: 1.5rem;
+    animation: coinFall 1.5s ease-in forwards;
+  }
+  @keyframes coinFall {
+    0%{transform:translateY(-50px) rotate(0); opacity:1}
+    100%{transform:translateY(100vh) rotate(720deg); opacity:0}
+  }
+
+  /* ── PROGRESS ── */
+  .progress-label { font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 5px; }
+  .progress-bar { background: #eee; border-radius: 999px; height: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--green-mid), var(--green-light)); transition: width 0.5s ease; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 2px dashed var(--green-light); margin: 20px 0; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab {
+    padding: 8px 18px; border-radius: 999px;
+    font-weight: 800; font-size: 0.88rem;
+    cursor: pointer; transition: all 0.15s;
+    background: white; color: var(--ink-soft);
+    border: 2.5px solid #eee;
+  }
+  .tab.active { background: var(--green-mid); color: white; border-color: var(--green-mid); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: slideIn 0.2s ease; }
+
+  /* ── HOVER EFFECTS ── */
+  .wiggle:hover { animation: wiggle 0.4s ease; }
+  @keyframes wiggle { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-5deg)} 75%{transform:rotate(5deg)} }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 540px) {
+    .cp-circle { width:42px;height:42px;font-size:1.1rem; }
+    .char-card { min-width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background scene -->
+<div class="bg-scene">
+  <div class="sun"></div>
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  <div class="tree tree-1"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="tree tree-2"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="tree tree-3"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="tree tree-4"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="mushroom mushroom-1">🍄</div>
+  <div class="mushroom mushroom-2">🍄</div>
+  <div class="butterfly butterfly-1">🦋</div>
+  <div class="butterfly butterfly-2">🦋</div>
+  <div class="grass-strip"></div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Coin rain -->
+<div class="reward-rain" id="rewardRain"></div>
+
+<!-- App -->
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-title">🗝️ The <span>Golden Key</span><br>Adventure</div>
+    <div class="header-sub">🌿 A Summer Forest Escape Room 🌿</div>
+  </div>
+
+  <!-- Characters -->
+  <div class="characters">
+    <!-- Capybara (player) -->
+    <div class="char-card wiggle">
+      <svg class="char-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body -->
+        <ellipse cx="40" cy="52" rx="26" ry="18" fill="#C8956A"/>
+        <!-- Head -->
+        <ellipse cx="40" cy="30" rx="18" ry="16" fill="#D4A574"/>
+        <!-- Nose area (flat snout) -->
+        <ellipse cx="40" cy="36" rx="10" ry="7" fill="#C8956A"/>
+        <!-- Nostrils -->
+        <circle cx="37" cy="37" r="2" fill="#8B5E3C"/>
+        <circle cx="43" cy="37" r="2" fill="#8B5E3C"/>
+        <!-- Eyes -->
+        <circle cx="33" cy="26" r="4" fill="#2C1A0E"/>
+        <circle cx="47" cy="26" r="4" fill="#2C1A0E"/>
+        <circle cx="34.5" cy="24.5" r="1.5" fill="white"/>
+        <circle cx="48.5" cy="24.5" r="1.5" fill="white"/>
+        <!-- Ears -->
+        <ellipse cx="26" cy="18" rx="5" ry="6" fill="#C8956A"/>
+        <ellipse cx="26" cy="18" rx="3" ry="4" fill="#F0C090"/>
+        <ellipse cx="54" cy="18" rx="5" ry="6" fill="#C8956A"/>
+        <ellipse cx="54" cy="18" rx="3" ry="4" fill="#F0C090"/>
+        <!-- Little smile -->
+        <path d="M35 40 Q40 44 45 40" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Legs -->
+        <ellipse cx="24" cy="65" rx="7" ry="5" fill="#C8956A"/>
+        <ellipse cx="56" cy="65" rx="7" ry="5" fill="#C8956A"/>
+        <!-- Flower on head -->
+        <circle cx="40" cy="14" r="3" fill="#FFD966"/>
+        <circle cx="37" cy="11" r="2.5" fill="#FF8C42"/>
+        <circle cx="43" cy="11" r="2.5" fill="#FF8C42"/>
+        <circle cx="40" cy="8" r="2.5" fill="#FF8C42"/>
+      </svg>
+      <div class="char-name">Capi 🌸</div>
+      <div class="char-role">Your Hero — Capybara</div>
+    </div>
+
+    <!-- Monkey (boss) -->
+    <div class="char-card wiggle">
+      <svg class="char-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body -->
+        <ellipse cx="40" cy="54" rx="20" ry="16" fill="#8B5E3C"/>
+        <!-- Head -->
+        <circle cx="40" cy="28" r="18" fill="#A0714F"/>
+        <!-- Face patch -->
+        <ellipse cx="40" cy="32" rx="11" ry="9" fill="#E8C49A"/>
+        <!-- Ears -->
+        <circle cx="22" cy="26" r="8" fill="#A0714F"/>
+        <circle cx="22" cy="26" r="5" fill="#E8C49A"/>
+        <circle cx="58" cy="26" r="8" fill="#A0714F"/>
+        <circle cx="58" cy="26" r="5" fill="#E8C49A"/>
+        <!-- Eyes -->
+        <circle cx="33" cy="24" r="4.5" fill="#2C1A0E"/>
+        <circle cx="47" cy="24" r="4.5" fill="#2C1A0E"/>
+        <circle cx="34.5" cy="22.5" r="1.5" fill="white"/>
+        <circle cx="48.5" cy="22.5" r="1.5" fill="white"/>
+        <!-- Mischievous eyebrows -->
+        <path d="M29 18 Q33 15 37 18" stroke="#5A3E2B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M43 18 Q47 15 51 18" stroke="#5A3E2B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <!-- Nose -->
+        <ellipse cx="40" cy="30" rx="3.5" ry="2.5" fill="#5A3E2B"/>
+        <!-- Smirk -->
+        <path d="M34 36 Q38 39 44 36" stroke="#5A3E2B" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Tail -->
+        <path d="M60 60 Q75 50 72 38 Q70 30 62 32" stroke="#8B5E3C" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <!-- Hands -->
+        <ellipse cx="20" cy="58" rx="6" ry="5" fill="#A0714F"/>
+        <ellipse cx="60" cy="58" rx="6" ry="5" fill="#A0714F"/>
+      </svg>
+      <div class="char-name">Moki 🐒</div>
+      <div class="char-role">The Cunning Monkey</div>
+    </div>
+
+    <!-- Princess -->
+    <div class="char-card wiggle">
+      <svg class="char-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Dress -->
+        <path d="M20 78 Q25 55 40 55 Q55 55 60 78 Z" fill="#F4A7C0"/>
+        <!-- Dress shine -->
+        <path d="M30 60 Q35 57 38 62" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <!-- Body -->
+        <ellipse cx="40" cy="50" rx="12" ry="9" fill="#FDDCA0"/>
+        <!-- Head -->
+        <circle cx="40" cy="28" r="17" fill="#FDDCA0"/>
+        <!-- Hair -->
+        <ellipse cx="40" cy="18" rx="17" ry="10" fill="#FFD966"/>
+        <ellipse cx="24" cy="28" rx="6" ry="14" fill="#FFD966"/>
+        <ellipse cx="56" cy="28" rx="6" ry="14" fill="#FFD966"/>
+        <!-- Crown -->
+        <path d="M26 16 L28 9 L33 14 L40 8 L47 14 L52 9 L54 16 Z" fill="#F4A800"/>
+        <circle cx="33" cy="12" r="2" fill="#E05C5C"/>
+        <circle cx="40" cy="9" r="2.5" fill="#6BBDE3"/>
+        <circle cx="47" cy="12" r="2" fill="#A8D5A2"/>
+        <!-- Eyes -->
+        <circle cx="33" cy="26" r="4" fill="#2C1A0E"/>
+        <circle cx="47" cy="26" r="4" fill="#2C1A0E"/>
+        <circle cx="34.5" cy="24.5" r="1.5" fill="white"/>
+        <circle cx="48.5" cy="24.5" r="1.5" fill="white"/>
+        <!-- Eyelashes -->
+        <path d="M29 22 Q31 20 33 22" stroke="#2C1A0E" stroke-width="1.5" fill="none"/>
+        <path d="M47 22 Q49 20 51 22" stroke="#2C1A0E" stroke-width="1.5" fill="none"/>
+        <!-- Blush -->
+        <ellipse cx="28" cy="30" rx="5" ry="3" fill="#F4A7C0" opacity="0.7"/>
+        <ellipse cx="52" cy="30" rx="5" ry="3" fill="#F4A7C0" opacity="0.7"/>
+        <!-- Smile -->
+        <path d="M34 34 Q40 39 46 34" stroke="#C47A8A" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Arms -->
+        <ellipse cx="25" cy="52" rx="5" ry="3" fill="#FDDCA0" transform="rotate(-20 25 52)"/>
+        <ellipse cx="55" cy="52" rx="5" ry="3" fill="#FDDCA0" transform="rotate(20 55 52)"/>
+      </svg>
+      <div class="char-name">Lily 👸</div>
+      <div class="char-role">The Princess — Save Her!</div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-chip">
+      <span class="stat-icon">💰</span>
+      <span class="stat-label">COINS</span>
+      <span class="stat-value money" id="statMoney">€1,000</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">🗝️</span>
+      <span class="stat-label">KEY FRAGS</span>
+      <span class="stat-value key" id="statKeys">0 / 6</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">📍</span>
+      <span class="stat-label">CHECKPOINT</span>
+      <span class="stat-value" id="statCP">1 / 6</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">🏆</span>
+      <span class="stat-label">PHASE</span>
+      <span class="stat-value" id="statPhase">Adventure</span>
+    </div>
+  </div>
+
+  <!-- Key Fragments -->
+  <div class="card">
+    <div class="section-title">🗝️ Key Fragments</div>
+    <div class="key-row" id="keyFragments">
+      <div class="key-frag" id="kf0">🔒</div>
+      <div class="key-frag" id="kf1">🔒</div>
+      <div class="key-frag" id="kf2">🔒</div>
+      <div class="key-frag" id="kf3">🔒</div>
+      <div class="key-frag" id="kf4">🔒</div>
+      <div class="key-frag" id="kf5">🔒</div>
+    </div>
+    <div style="margin-top:10px">
+      <div class="progress-label">Master Key progress</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="keyProgress" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkpoint Map -->
+  <div class="card">
+    <div class="section-title">🗺️ Checkpoint Map</div>
+    <div class="checkpoint-map" style="border:none;padding:0;box-shadow:none">
+      <div class="map-path" id="mapPath">
+        <div class="cp-node">
+          <div class="cp-circle active" id="cp0" onclick="scanQR(0)" title="Scan QR Code">🌲</div>
+          <div class="cp-label">CP 1</div>
+        </div>
+        <div class="path-line" id="pl0"></div>
+        <div class="cp-node">
+          <div class="cp-circle" id="cp1" onclick="scanQR(1)" title="Scan QR Code">🌊</div>
+          <div class="cp-label">CP 2</div>
+        </div>
+        <div class="path-line" id="pl1"></div>
+        <div class="cp-node">
+          <div class="cp-circle" id="cp2" onclick="scanQR(2)" title="Scan QR Code">🔥</div>
+          <div class="cp-label">CP 3</div>
+        </div>
+        <div class="path-line" id="pl2"></div>
+        <div class="cp-node">
+          <div class="cp-circle" id="cp3" onclick="scanQR(3)" title="Scan QR Code">🌙</div>
+          <div class="cp-label">CP 4</div>
+        </div>
+        <div class="path-line" id="pl3"></div>
+        <div class="cp-node">
+          <div class="cp-circle" id="cp4" onclick="scanQR(4)" title="Scan QR Code">⚡</div>
+          <div class="cp-label">CP 5</div>
+        </div>
+        <div class="path-line" id="pl4"></div>
+        <div class="cp-node">
+          <div class="cp-circle" id="cp5" onclick="scanQR(5)" title="Scan QR Code">💎</div>
+          <div class="cp-label">CP 6</div>
+        </div>
+        <div class="path-line" id="pl5"></div>
+        <div class="cp-node">
+          <div class="castle-node" title="Final Dungeon">🏰</div>
+          <div class="cp-label">FINAL</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:0.78rem;color:var(--ink-soft);font-weight:600;margin-top:10px;text-align:center">
+      👆 Tap a checkpoint to simulate scanning its QR code!
+    </div>
+  </div>
+
+  <!-- Active Challenge -->
+  <div class="challenge-panel" id="challengePanel">
+    <div class="challenge-header">
+      <div class="challenge-badge" id="challengeBadge">⚔️ Challenge 1</div>
+      <div style="margin-left:auto;font-weight:800;font-size:1rem" id="timerDisplay">⏱️ 60s</div>
+    </div>
+    <div class="timer-bar">
+      <div class="timer-fill" id="timerFill" style="width:100%"></div>
+    </div>
+    <div style="font-weight:700;font-size:1rem;margin:10px 0 6px" id="challengeTitle">Find the hidden treasure!</div>
+    <div style="font-size:0.88rem;color:var(--ink-soft);font-weight:600;line-height:1.5;margin-bottom:16px" id="challengeDesc">Description here</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-green" onclick="completeChallenge(true)">✅ Complete Challenge!</button>
+      <button class="btn btn-outline" onclick="completeChallenge(false)">❌ Failed</button>
+    </div>
+  </div>
+
+  <!-- Shop -->
+  <div id="shopSection" style="display:none">
+    <div class="section-title">🏪 Shop — Spend Wisely!</div>
+    <div class="shop-grid">
+      <div class="shop-item luck" onclick="buyItem('luck')">
+        <span class="shop-icon">🍀</span>
+        <div class="shop-name">LUCK</div>
+        <div class="risk-badge risk-high">⚠️ HIGH RISK</div>
+        <div class="shop-desc">Random outcome: gain item, skip round, or lose coins!</div>
+        <div class="shop-price">💰 €150</div>
+      </div>
+      <div class="shop-item time" onclick="buyItem('time')">
+        <span class="shop-icon">⏱️</span>
+        <div class="shop-name">×2 TIME</div>
+        <div class="risk-badge risk-safe">✅ SAFE</div>
+        <div class="shop-desc">Double your time in the next challenge.</div>
+        <div class="shop-price">💰 €200</div>
+      </div>
+      <div class="shop-item money" onclick="buyItem('money')">
+        <span class="shop-icon">💰</span>
+        <div class="shop-name">×2 MONEY</div>
+        <div class="risk-badge risk-safe">✅ SAFE</div>
+        <div class="shop-desc">Double all money rewards next round!</div>
+        <div class="shop-price">💰 €250</div>
+      </div>
+      <div class="shop-item hint" onclick="buyItem('hint')">
+        <span class="shop-icon">💡</span>
+        <div class="shop-name">HINT</div>
+        <div class="risk-badge risk-safe">✅ SAFE</div>
+        <div class="shop-desc">Sneak peek at the next challenge clue.</div>
+        <div class="shop-price">💰 €100</div>
+      </div>
+    </div>
+    <button class="btn btn-green" onclick="continueAdventure()" style="margin-top:8px">
+      🌿 Continue Adventure →
+    </button>
+  </div>
+
+  <!-- Final Challenge -->
+  <div class="final-section" id="finalSection">
+    <div class="section-title">🏰 Final Dungeon — The Ultimate Challenge!</div>
+    <div style="font-size:0.9rem;color:var(--ink-soft);font-weight:600;margin-bottom:12px">
+      You've forged the Master Key! Now face the dungeon's guardians...
+    </div>
+    <div class="final-vs">
+      <div class="final-char">
+        <div style="font-size:2.5rem">🐒</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1rem;margin:6px 0">Moki the Monkey</div>
+        <div style="font-size:0.78rem;color:var(--ink-soft);font-weight:600">Riddle Master</div>
+      </div>
+      <div style="font-size:2rem;display:flex;align-items:center;color:var(--red);font-weight:900">VS</div>
+      <div class="final-char">
+        <div style="font-size:2.5rem">🐱</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1rem;margin:6px 0">Cleo the Cat</div>
+        <div style="font-size:0.78rem;color:var(--ink-soft);font-weight:600">Silly Question Keeper</div>
+      </div>
+    </div>
+
+    <!-- Final shop -->
+    <div style="background:var(--cream);border-radius:16px;padding:16px;margin-bottom:16px;border:2px solid var(--gold)">
+      <div style="font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:10px">✨ Final Shop</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-yellow" onclick="buyFinalTime()" style="font-size:0.85rem">⏳ Buy Time (€1 = 10s)</button>
+        <button class="btn btn-outline" onclick="buyFinalHint()" style="font-size:0.85rem">💡 Buy Hint (€100)</button>
+        <button class="btn btn-outline" onclick="buyFinalLuck()" style="font-size:0.85rem">🍀 Buy Luck (€150)</button>
+      </div>
+    </div>
+
+    <div id="finalQ1" style="margin-bottom:14px">
+      <div style="font-weight:800;margin-bottom:6px">🐒 Moki's Riddle:</div>
+      <div style="background:white;border-radius:14px;padding:14px;border:2px solid var(--purple);font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:8px" id="monkeyRiddle">
+        "I have cities, but no houses live there. I have mountains, but no trees grow. I have water, but no fish swim. I have roads, but no cars drive. What am I? 🗺️"
+      </div>
+      <input class="answer-input" id="monkeyAnswer" placeholder="Type your answer..." />
+      <button class="btn btn-green" onclick="checkMonkeyAnswer()" style="margin-top:6px">Answer Moki!</button>
+    </div>
+
+    <div id="finalQ2" style="display:none;margin-bottom:14px">
+      <div style="font-weight:800;margin-bottom:6px">🐱 Cleo's Silly Question:</div>
+      <div style="background:white;border-radius:14px;padding:14px;border:2px solid var(--blue);font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:8px">
+        "If you had to bring ONE fruit to a space station, but it had to be able to play chess, what would you bring and WHY? 🚀🍎♟️"
+      </div>
+      <input class="answer-input" id="catAnswer" placeholder="Any answer works, be creative!" />
+      <button class="btn btn-green" onclick="checkCatAnswer()" style="margin-top:6px">Answer Cleo!</button>
+    </div>
+  </div>
+
+  <!-- Score board -->
+  <div class="score-board" id="scoreBoard">
+    <div style="font-size:3rem;margin-bottom:10px">🎉</div>
+    <div class="section-title" style="justify-content:center;font-size:1.8rem">Princess Saved!</div>
+    <div style="font-size:1rem;color:var(--ink-soft);font-weight:600;margin:10px 0 20px">
+      Capi the Capybara rescued Princess Lily! 🌸
+    </div>
+    <div class="score-big" id="finalScore">€1,250</div>
+    <div style="font-size:0.85rem;color:var(--ink-soft);font-weight:600;margin:6px 0 20px">Final Score</div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px" id="scoreBreakdown"></div>
+    <button class="btn btn-green" onclick="restartGame()">🔄 Play Again!</button>
+  </div>
+
+</div><!-- /app -->
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <span class="modal-icon" id="modalIcon">🎉</span>
+    <div class="modal-title" id="modalTitle">Title</div>
+    <div class="modal-body" id="modalBody">Body</div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<script>
+// ── GAME STATE ──
+const STATE = {
+  money: 1000,
+  keys: 0,
+  currentCP: 0,
+  phase: 'adventure', // 'adventure' | 'shop' | 'final' | 'victory'
+  items: { doubleTime: false, doubleMoney: false, hint: null },
+  monkeyDone: false,
+  timerInterval: null,
+  timerSeconds: 0,
+  timerMax: 60,
+};
+
+const CHALLENGES = [
+  { name: "Forest Treasure Hunt 🌲", desc: "Search the area for 3 hidden acorn tokens. They could be under leaves, behind trees, or in flower pots!", time: 60, reward: 150 },
+  { name: "River Crossing Puzzle 🌊", desc: "Use the stepping stones to cross without getting wet! Solve the pattern: only odd-numbered stones are safe.", time: 75, reward: 180 },
+  { name: "Campfire Quiz 🔥", desc: "Answer 3 nature trivia questions correctly to keep the campfire burning and earn your fragment!", time: 90, reward: 200 },
+  { name: "Moonlight Maze 🌙", desc: "Navigate the hedge maze using only the starlight map. Find the glowing mushroom at the center!", time: 80, reward: 220 },
+  { name: "Storm Tower Climb ⚡", desc: "Climb the tower and retrieve the lightning crystal before the storm arrives. Watch your footing!", time: 70, reward: 250 },
+  { name: "Crystal Cave Mystery 💎", desc: "Decode the crystal colors in sequence: Red → Blue → Gold → Purple. The pattern opens the final door!", time: 100, reward: 300 },
+];
+
+const HINTS = [
+  "🌲 Look near the biggest oak tree — something glimmers at its roots!",
+  "🌊 Count the lily pads... only step on the ones facing east!",
+  "🔥 The answer to the third question is always a number divisible by 4.",
+  "🌙 Turn LEFT at every fork — the maze has a left-hand rule!",
+  "⚡ The third step is loose — skip it and grab the rope on your right!",
+  "💎 Think of a sunset: Red at dusk, Blue at night, Gold at dawn, Purple at twilight.",
+];
+
+// ── UTILS ──
+function formatMoney(n) { return '€' + n.toLocaleString(); }
+
+function updateStats() {
+  document.getElementById('statMoney').textContent = formatMoney(STATE.money);
+  document.getElementById('statKeys').textContent = STATE.keys + ' / 6';
+  document.getElementById('statCP').textContent = Math.min(STATE.currentCP + 1, 6) + ' / 6';
+  document.getElementById('statPhase').textContent = {
+    adventure:'Adventure', shop:'Shop 🛒', final:'Final Boss!', victory:'Victory! 🎉'
+  }[STATE.phase] || 'Adventure';
+}
+
+function showToast(msg, type = 'success', duration = 3000) {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => t.remove(), 300); }, duration);
+}
+
+function showModal(icon, title, body, actions) {
+  document.getElementById('modalIcon').textContent = icon;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  const actDiv = document.getElementById('modalActions');
+  actDiv.innerHTML = '';
+  actions.forEach(a => {
+    const b = document.createElement('button');
+    b.className = 'btn ' + (a.cls || 'btn-green');
+    b.textContent = a.label;
+    b.onclick = () => { closeModal(); a.fn && a.fn(); };
+    actDiv.appendChild(b);
+  });
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+function coinRain() {
+  const rain = document.getElementById('rewardRain');
+  rain.style.display = 'block';
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const coin = document.createElement('div');
+      coin.className = 'coin-particle';
+      coin.textContent = ['💰','🪙','✨','⭐','🌟'][Math.floor(Math.random()*5)];
+      coin.style.left = Math.random() * 100 + 'vw';
+      coin.style.animationDelay = Math.random() * 0.5 + 's';
+      rain.appendChild(coin);
+      setTimeout(() => coin.remove(), 2000);
+    }, i * 60);
+  }
+  setTimeout(() => { rain.style.display = 'none'; }, 2500);
+}
+
+// ── TIMER ──
+function startTimer(seconds) {
+  STATE.timerSeconds = seconds;
+  STATE.timerMax = seconds;
+  clearInterval(STATE.timerInterval);
+  updateTimerUI();
+  STATE.timerInterval = setInterval(() => {
+    STATE.timerSeconds--;
+    updateTimerUI();
+    if (STATE.timerSeconds <= 0) {
+      clearInterval(STATE.timerInterval);
+      timeOut();
+    }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const pct = (STATE.timerSeconds / STATE.timerMax) * 100;
+  const fill = document.getElementById('timerFill');
+  document.getElementById('timerDisplay').textContent = '⏱️ ' + STATE.timerSeconds + 's';
+  fill.style.width = pct + '%';
+  fill.className = 'timer-fill' + (pct < 30 ? ' danger' : pct < 60 ? ' warning' : '');
+}
+
+function timeOut() {
+  document.getElementById('challengePanel').classList.remove('active');
+  showToast('⏰ Time\'s up! Better luck next time...', 'error');
+  showModal('⏰', 'Time\'s Up!', 'You ran out of time! The challenge was too tricky... but Capi doesn\'t give up!', [
+    { label: '🔄 Try Again', fn: () => scanQR(STATE.currentCP) },
+    { label: '⏭️ Skip (lose €100)', cls: 'btn-outline', fn: () => { STATE.money = Math.max(0, STATE.money - 100); updateStats(); showShop(); } }
+  ]);
+}
+
+// ── CHECKPOINT ──
+function scanQR(idx) {
+  if (idx !== STATE.currentCP) {
+    if (idx < STATE.currentCP) showToast('✅ Already completed!', 'success');
+    else showToast('🔒 Complete previous checkpoints first!', 'warning');
+    return;
+  }
+  const ch = CHALLENGES[idx];
+  const timeBoost = STATE.items.doubleTime ? 2 : 1;
+  STATE.items.doubleTime = false;
+
+  // Show hint if available
+  let hintHtml = '';
+  if (STATE.items.hint === idx) {
+    hintHtml = `<div style="background:#DCFCE7;border-radius:10px;padding:10px;margin-bottom:10px;font-size:0.85rem;font-weight:700;color:var(--green-dark)">💡 Hint: ${HINTS[idx]}</div>`;
+  }
+
+  const panel = document.getElementById('challengePanel');
+  document.getElementById('challengeBadge').textContent = '⚔️ Challenge ' + (idx+1);
+  document.getElementById('challengeTitle').textContent = ch.name;
+  document.getElementById('challengeDesc').innerHTML = hintHtml + ch.desc;
+  panel.classList.add('active');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  startTimer(ch.time * timeBoost);
+}
+
+function completeChallenge(success) {
+  clearInterval(STATE.timerInterval);
+  const panel = document.getElementById('challengePanel');
+  panel.classList.remove('active');
+
+  if (!success) {
+    showModal('😢', 'Challenge Failed', 'Capi tried hard but couldn\'t complete it. No reward this time...', [
+      { label: '🔄 Try Again', fn: () => scanQR(STATE.currentCP) },
+      { label: '⏭️ Skip (lose €100)', cls: 'btn-outline', fn: () => { STATE.money = Math.max(0, STATE.money - 100); updateStats(); showShop(); } }
+    ]);
+    return;
+  }
+
+  const ch = CHALLENGES[STATE.currentCP];
+  const timeBonus = STATE.timerSeconds * 2;
+  const itemBonus = Math.floor(Math.random() * 50) * 10;
+  let baseReward = ch.reward;
+  let multiplier = STATE.items.doubleMoney ? 2 : 1;
+  STATE.items.doubleMoney = false;
+  const total = (baseReward + timeBonus + itemBonus) * multiplier;
+
+  STATE.money += total;
+  STATE.keys++;
+
+  // Update key fragment
+  const kf = document.getElementById('kf' + STATE.currentCP);
+  kf.textContent = '🗝️'; kf.classList.add('collected');
+  document.getElementById('keyProgress').style.width = (STATE.keys / 6 * 100) + '%';
+
+  // Update checkpoint
+  const cp = document.getElementById('cp' + STATE.currentCP);
+  cp.classList.remove('active'); cp.classList.add('done');
+  if (STATE.currentCP < 6) {
+    const pl = document.getElementById('pl' + STATE.currentCP);
+    if (pl) pl.classList.add('done');
+  }
+
+  STATE.currentCP++;
+  updateStats();
+  coinRain();
+
+  const multText = multiplier > 1 ? ` <em>(×2 Money applied!)</em>` : '';
+  showModal('🎉', 'Challenge Complete!', `
+    <strong>${ch.name}</strong><br><br>
+    💰 Base Reward: <strong>${formatMoney(baseReward)}</strong><br>
+    ⏱️ Time Bonus: <strong>${formatMoney(timeBonus)}</strong><br>
+    🎁 Item Bonus: <strong>${formatMoney(itemBonus)}</strong><br>
+    ${multiplier > 1 ? `✨ ×2 Multiplier Applied!<br>` : ''}
+    <hr style="margin:10px 0;border-color:#eee">
+    🏆 Total Earned: <strong style="color:var(--green-dark);font-size:1.1em">${formatMoney(total)}</strong>${multText}<br>
+    🗝️ Key Fragment ${STATE.keys}/6 collected!
+  `, [{ label: '🛒 Visit Shop!', fn: showShop }]);
+}
+
+// ── SHOP ──
+function showShop() {
+  STATE.phase = 'shop';
+  updateStats();
+  const shop = document.getElementById('shopSection');
+  shop.style.display = 'block';
+  shop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Reset bought state
+  document.querySelectorAll('.shop-item').forEach(i => i.classList.remove('bought'));
+}
+
+function buyItem(type) {
+  const prices = { luck: 150, time: 200, money: 250, hint: 100 };
+  const price = prices[type];
+  if (STATE.money < price) { showToast('💸 Not enough coins!', 'error'); return; }
+
+  STATE.money -= price;
+
+  if (type === 'luck') {
+    const roll = Math.random();
+    if (roll < 0.4) {
+      const bonus = [100, 150, 200][Math.floor(Math.random()*3)];
+      STATE.money += bonus;
+      showModal('🍀', 'Lucky Draw!', `You found a mystery treasure chest worth <strong>${formatMoney(bonus)}</strong>! Fortune smiles! 🌟`, [{ label: 'Woohoo! 🎉' }]);
+    } else if (roll < 0.7) {
+      STATE.items.doubleTime = true;
+      showModal('🍀', 'Lucky Draw!', `The forest spirits grant you <strong>double time</strong> for the next challenge! ⏱️✨`, [{ label: 'Amazing! 🙌' }]);
+    } else {
+      const penalty = 200;
+      STATE.money = Math.max(0, STATE.money - penalty);
+      showModal('😬', 'Bad Luck!', `A mischievous squirrel stole <strong>${formatMoney(penalty)}</strong> from your pouch! 🐿️ The luck item is risky!`, [{ label: 'Nooo! 😭' }]);
+    }
+  } else if (type === 'time') {
+    STATE.items.doubleTime = true;
+    showToast('⏱️ ×2 Time activated for next challenge!', 'success');
+  } else if (type === 'money') {
+    STATE.items.doubleMoney = true;
+    showToast('💰 ×2 Money activated for next challenge!', 'gold');
+  } else if (type === 'hint') {
+    STATE.items.hint = STATE.currentCP;
+    showToast('💡 Hint ready for Checkpoint ' + (STATE.currentCP + 1) + '!', 'success');
+  }
+
+  updateStats();
+  event.currentTarget.classList.add('bought');
+}
+
+function continueAdventure() {
+  document.getElementById('shopSection').style.display = 'none';
+  STATE.phase = 'adventure';
+  updateStats();
+
+  if (STATE.keys >= 6) {
+    showFinal();
+    return;
+  }
+
+  // Advance next CP
+  if (STATE.currentCP < 6) {
+    const nextCp = document.getElementById('cp' + STATE.currentCP);
+    if (nextCp) { nextCp.classList.add('active'); }
+  }
+
+  showModal('🗺️', 'Back to Adventure!', `Next up: <strong>Checkpoint ${STATE.currentCP + 1}</strong><br>Keep going Capi! 🌿 You need ${6 - STATE.keys} more key fragments!`, [
+    { label: '🌿 Let\'s Go!', fn: () => {} }
+  ]);
+}
+
+// ── FINAL ──
+function showFinal() {
+  STATE.phase = 'final';
+  updateStats();
+  document.getElementById('finalSection').classList.add('active');
+  document.getElementById('finalSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  showModal('🏰', 'The Master Key is Forged!', '🗝️ All 6 fragments combined! The dungeon door creaks open...<br><br>Face Moki the Monkey and Cleo the Cat to rescue Princess Lily! 👸', [
+    { label: '⚔️ Enter the Dungeon!' }
+  ]);
+}
+
+function buyFinalTime() {
+  const amount = parseInt(prompt('How many seconds to buy? (€1 = 10s)', '100'));
+  if (!amount || isNaN(amount) || amount <= 0) return;
+  const cost = Math.ceil(amount / 10);
+  if (STATE.money < cost) { showToast('💸 Not enough coins!', 'error'); return; }
+  STATE.money -= cost;
+  updateStats();
+  showToast(`⏳ Bought ${amount * 10} extra seconds for ${formatMoney(cost)}!`, 'success');
+}
+
+function buyFinalHint() {
+  if (STATE.money < 100) { showToast('💸 Not enough coins!', 'error'); return; }
+  STATE.money -= 100; updateStats();
+  showModal('💡', 'Final Hint!', '🐒 Moki\'s riddle answer is something you can hold in your hands but never touch directly...<br><br>🐱 Cleo doesn\'t care about the answer — she wants to hear your confidence!', [{ label: 'Got it! 🙏' }]);
+}
+
+function buyFinalLuck() {
+  if (STATE.money < 150) { showToast('💸 Not enough coins!', 'error'); return; }
+  STATE.money -= 150; updateStats();
+  const roll = Math.random();
+  if (roll < 0.5) {
+    showModal('🍀', 'Lucky!', 'The forest spirits accept your answer automatically! Skip one question! ✨', [
+      { label: 'Skip Moki!', fn: () => { document.getElementById('finalQ1').style.display='none'; document.getElementById('finalQ2').style.display='block'; } }
+    ]);
+  } else {
+    const loss = 300;
+    STATE.money = Math.max(0, STATE.money - loss);
+    updateStats();
+    showModal('😬', 'Bad Luck!', `Moki laughed and stole ${formatMoney(loss)} from your bag! 🐒`, [{ label: 'Nooo! 😤' }]);
+  }
+}
+
+function checkMonkeyAnswer() {
+  const ans = document.getElementById('monkeyAnswer').value.toLowerCase().trim();
+  const correct = ['map', 'a map'];
+  if (correct.some(c => ans.includes(c))) {
+    showModal('🐒', 'Moki is Impressed!', '"Hmph... you\'re smarter than you look, little capybara! Fine, you may pass!" 🌟<br><br>One more guardian to go...', [
+      { label: 'Face Cleo! 😤', fn: () => { document.getElementById('finalQ1').style.display='none'; document.getElementById('finalQ2').style.display='block'; } }
+    ]);
+  } else {
+    STATE.money = Math.max(0, STATE.money - 50);
+    updateStats();
+    showToast('🐒 Moki shakes his head... Try again! (-€50)', 'warning');
+  }
+}
+
+function checkCatAnswer() {
+  const ans = document.getElementById('catAnswer').value.trim();
+  if (ans.length < 5) { showToast('🐱 Cleo wants a real answer!', 'warning'); return; }
+  // Any answer works!
+  showVictory();
+}
+
+// ── VICTORY ──
+function showVictory() {
+  STATE.phase = 'victory';
+  updateStats();
+  coinRain();
+  setTimeout(coinRain, 1000);
+  setTimeout(coinRain, 2000);
+
+  document.getElementById('finalSection').classList.remove('active');
+  const board = document.getElementById('scoreBoard');
+  board.classList.add('active');
+  document.getElementById('finalScore').textContent = formatMoney(STATE.money);
+
+  const breakdown = document.getElementById('scoreBreakdown');
+  breakdown.innerHTML = `
+    <div class="stat-chip"><span class="stat-icon">💰</span><span class="stat-label">FINAL COINS</span><span class="stat-value money">${formatMoney(STATE.money)}</span></div>
+    <div class="stat-chip"><span class="stat-icon">🗝️</span><span class="stat-label">KEYS FOUND</span><span class="stat-value key">6/6 ✓</span></div>
+    <div class="stat-chip"><span class="stat-icon">👸</span><span class="stat-label">PRINCESS</span><span class="stat-value" style="color:var(--pink)">Saved! 🌸</span></div>
+  `;
+
+  board.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  showModal('🎉', 'VICTORY!', `
+    Capi the Capybara rescued Princess Lily! 👸🌸<br><br>
+    Moki finally smiled, Cleo did a backflip, and the whole forest celebrated! 🎊🌿🦋<br><br>
+    <strong>Final Score: ${formatMoney(STATE.money)}</strong>
+  `, [{ label: '🌟 Celebrate! 🌟', fn: () => { coinRain(); setTimeout(coinRain,600); } }]);
+}
+
+function restartGame() {
+  STATE.money = 1000; STATE.keys = 0; STATE.currentCP = 0;
+  STATE.phase = 'adventure'; STATE.monkeyDone = false;
+  STATE.items = { doubleTime: false, doubleMoney: false, hint: null };
+  clearInterval(STATE.timerInterval);
+
+  // Reset UI
+  for (let i = 0; i < 6; i++) {
+    const cp = document.getElementById('cp' + i);
+    cp.classList.remove('done', 'active');
+    if (i === 0) cp.classList.add('active');
+    const pl = document.getElementById('pl' + i);
+    if (pl) pl.classList.remove('done');
+    const kf = document.getElementById('kf' + i);
+    kf.textContent = '🔒'; kf.classList.remove('collected');
+  }
+  document.getElementById('keyProgress').style.width = '0%';
+  document.getElementById('challengePanel').classList.remove('active');
+  document.getElementById('shopSection').style.display = 'none';
+  document.getElementById('finalSection').classList.remove('active');
+  document.getElementById('scoreBoard').classList.remove('active');
+  document.getElementById('finalQ1').style.display = 'block';
+  document.getElementById('finalQ2').style.display = 'none';
+  document.getElementById('monkeyAnswer').value = '';
+  document.getElementById('catAnswer').value = '';
+
+  updateStats();
+  showToast('🌿 New adventure begins! Good luck Capi!', 'success');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init
+updateStats();
+showToast('🌿 Welcome to the Golden Key Adventure! Start at Checkpoint 1!', 'success', 4000);
+</script>
+</body>
+</html>
