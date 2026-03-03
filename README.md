@@ -1,5 +1,5 @@
 # 🗝️ The Golden Key Adventure - QR Code Game Demo
-
+Link : [qrgameidea.netlify.app](https://qrgameidea.netlify.app/)
 ## 📖 Overview
 
 The Golden Key Adventure is an interactive QR code-based treasure hunt game designed for educational environments, specifically demonstrated for Vuoksi school. Players follow Capi the Capybara on an enchanting journey to collect six golden key fragments by completing challenges at various checkpoints.
